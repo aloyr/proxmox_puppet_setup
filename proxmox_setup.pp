@@ -43,3 +43,8 @@ exec {'git':
   creates => '/usr/bin/git',
   logoutput => on_failure,
 }
+
+exec {'set_prompt.sh':
+  command => "wget -O /etc/profile.d/set_prompt.sh https://raw.githubusercontent.com/aloyr/proxmox_puppet_setup/master/set_prompt.sh",
+  creates => '/etc/profile.d/set_prompt.sh',
+}

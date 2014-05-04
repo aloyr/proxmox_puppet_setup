@@ -48,3 +48,49 @@ exec {'set_prompt.sh':
   command => "wget -O /etc/profile.d/set_prompt.sh https://raw.githubusercontent.com/aloyr/proxmox_puppet_setup/master/set_prompt.sh",
   creates => '/etc/profile.d/set_prompt.sh',
 }
+
+exec {'toprc':
+  command => "wget -O /root/.toprc https://raw.githubusercontent.com/aloyr/proxmox_puppet_setup/master/toprc",
+  creates => '/root/.toprc',
+}
+
+class timezone {
+  package { "tzdata":
+    ensure => installed
+  }
+}
+
+class timezone::central inherits timezone {
+  file { "/etc/localtime":
+    require => Package["tzdata"],
+    ensure => 'file',
+    source => "file:///usr/share/zoneinfo/US/Central",
+  }
+}
+
+class timezone::eastern inherits timezone {
+  file { "/etc/localtime":
+    require => Package["tzdata"],
+    ensure => 'file',
+    source => "file:///usr/share/zoneinfo/US/Eastern"
+  }
+}
+
+class timezone::pacific inherits timezone {
+  file { "/etc/localtime":
+    require => Package["tzdata"],
+    ensure => 'file',
+    source => "file:///usr/share/zoneinfo/US/Pacific"
+  }
+}
+
+class timezone::mountain inherits timezone {
+  file { "/etc/localtime":
+    require => Package["tzdata"],
+    ensure => 'file',
+    source => "file:///usr/share/zoneinfo/US/Mountain"
+  }
+}
+
+include timezone
+include timezone::central

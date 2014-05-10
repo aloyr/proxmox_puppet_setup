@@ -31,7 +31,8 @@ exec {'test':
 
 
 $backports_file = "/etc/apt/sources.list.d/backports.list"
-$backports_contents = "deb http://us.debian.org/debian-backports wheezy-backports main"
+#$backports_contents = "deb http://us.debian.org/debian-backports wheezy-backports main"
+$backports_contents = "deb http://ftp.de.debian.org/debian wheezy-backports main"
 exec {'backports':
   command => "echo '$backports_contents' > $backports_file",
   creates => "$backports_file",
@@ -39,7 +40,7 @@ exec {'backports':
 }
 
 exec {'git':
-  command => "apt-get -t wheezy-backports install git",
+  command => "apt-get update ; apt-get -t wheezy-backports install git",
   creates => '/usr/bin/git',
   logoutput => on_failure,
 }

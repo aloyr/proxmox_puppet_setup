@@ -64,32 +64,32 @@ class timezone {
 class timezone::central inherits timezone {
   file { "/etc/localtime":
     require => Package["tzdata"],
-    ensure => 'file',
-    source => "file:///usr/share/zoneinfo/US/Central",
+    ensure => file,
+    content => file("/usr/share/zoneinfo/US/Central"),
   }
 }
 
 class timezone::eastern inherits timezone {
   file { "/etc/localtime":
     require => Package["tzdata"],
-    ensure => 'file',
-    source => "file:///usr/share/zoneinfo/US/Eastern"
+    ensure => file,
+    content => file("/usr/share/zoneinfo/US/Eastern"),
   }
 }
 
 class timezone::pacific inherits timezone {
   file { "/etc/localtime":
     require => Package["tzdata"],
-    ensure => 'file',
-    source => "file:///usr/share/zoneinfo/US/Pacific"
+    ensure => file,
+    content => file("/usr/share/zoneinfo/US/Pacific"),
   }
 }
 
 class timezone::mountain inherits timezone {
   file { "/etc/localtime":
     require => Package["tzdata"],
-    ensure => 'file',
-    source => "file:///usr/share/zoneinfo/US/Mountain"
+    ensure => file,
+    content => file("/usr/share/zoneinfo/US/Mountain"),
   }
 }
 

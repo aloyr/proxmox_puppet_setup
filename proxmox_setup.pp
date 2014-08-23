@@ -23,6 +23,11 @@ Exec {
   ],
 }
 
+exec {'no_enterprise':
+  command => "sed -i ’s/^\([^#]\)/#\1/g’ /etc/apt/sources.list.d/pve-enterprise.list",
+  unless => "grep ^# /etc/apt/sources.list.d/pve-enterprise.list",
+}
+
 exec {'test': 
   command => 
     "wget -P /tmp https://apt.puppetlabs.com/puppetlabs-release-${lsbdistcodename}.deb ; dpkg -i /tmp/puppetlabs-release-${lsbdistcodename}.deb ; rm -f /tmp/puppetlabs-release-${lsbdistcodename}.deb",
@@ -43,6 +48,7 @@ exec {'git':
   command => "apt-get update ; apt-get -t wheezy-backports install git",
   creates => '/usr/bin/git',
   logoutput => on_failure,
+  require => Exec ['no_enterprise'],
 }
 
 exec {'set_prompt.sh':
@@ -53,6 +59,16 @@ exec {'set_prompt.sh':
 exec {'toprc':
   command => "wget -O /root/.toprc https://raw.githubusercontent.com/aloyr/proxmox_puppet_setup/master/toprc",
   creates => '/root/.toprc',
+}
+
+package {'vim':
+  ensure => 'installed',
+  require => 'no_enterprise',
+}
+
+package {'mdadm':
+  ensure => 'installed',
+  require => 'no_enterprise',
 }
 
 class timezone {

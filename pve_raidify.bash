@@ -56,7 +56,7 @@ mdadm --add /dev/md0 /dev/sda2
 
 echo monitor the raid rebuild process
 ISBUILDING=`grep '=' /proc/mdstat|wc -l`
-while [ $ISBUILDING -neq 0 ]; do
+while [ $ISBUILDING -ne 0 ]; do
   clear
   echo "waiting for raid rebuild to finish before continuing, please stand by..."
   cat /proc/mdstat
@@ -79,7 +79,7 @@ echo 1600000 > /proc/sys/dev/raid/speed_limit_max;
 
 echo monitor the raid rebuild process
 ISBUILDING=`grep '=' /proc/mdstat|wc -l`
-while [ $ISBUILDING -neq 0 ]; do
+while [ $ISBUILDING -ne 0 ]; do
   clear
   echo "waiting for raid rebuild to finish before rebooting, please stand by..."
   cat /proc/mdstat

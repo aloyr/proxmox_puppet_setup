@@ -54,6 +54,16 @@ echo add sda2 to md0
 sgdisk -t 2:fd00 /dev/sda
 mdadm --add /dev/md0 /dev/sda2
 
+echo monitor the raid rebuild process
+ISBUILDING=`grep '=' /proc/mdstat|wc -l`
+while [ $ISBUILDING -neq 0 ]; do
+  clear
+  echo "waiting for raid rebuild to finish before continuing, please stand by..."
+  cat /proc/mdstat
+  read -t1
+  ISBUILDING=`grep '=' /proc/mdstat|wc -l`
+done
+
 echo move pve lvm to /dev/md1
 pvcreate /dev/md1
 vgextend pve /dev/md1
@@ -66,6 +76,16 @@ mdadm --add /dev/md1 /dev/sda3
 echo make the raid rebuild go faster
 echo 800000 > /proc/sys/dev/raid/speed_limit_min;
 echo 1600000 > /proc/sys/dev/raid/speed_limit_max;
+
+echo monitor the raid rebuild process
+ISBUILDING=`grep '=' /proc/mdstat|wc -l`
+while [ $ISBUILDING -neq 0 ]; do
+  clear
+  echo "waiting for raid rebuild to finish before rebooting, please stand by..."
+  cat /proc/mdstat
+  read -t1
+  ISBUILDING=`grep '=' /proc/mdstat|wc -l`
+done
 
 echo reboot
 reboot

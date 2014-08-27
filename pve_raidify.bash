@@ -4,7 +4,7 @@ echo comment out pve-enterprise package repo, that requires a license
 sed -i 's/^\([^#]\)/#\1/g' /etc/apt/sources.list.d/pve-enterprise.list
 
 echo get some packages
-apt-get update; apt-get install -y mdadm vim
+apt-get update; DEBIAN_FRONTEND=noninteractive apt-get install -y mdadm vim
 
 echo duplicate partition table from sda to sdb, change uuid of sdb
 sgdisk -R /dev/sdb /dev/sda
@@ -52,6 +52,7 @@ update-initramfs -u
 
 echo add sda2 to md0
 sgdisk -t 2:fd00 /dev/sda
+sleep 1
 mdadm --add /dev/md0 /dev/sda2
 
 echo monitor the raid rebuild process
@@ -60,7 +61,7 @@ while [ $ISBUILDING -ne 0 ]; do
   clear
   echo "waiting for raid rebuild to finish before continuing, please stand by..."
   cat /proc/mdstat
-  read -t1
+  sleep 1
   ISBUILDING=`grep '=' /proc/mdstat|wc -l`
 done
 
@@ -83,7 +84,7 @@ while [ $ISBUILDING -ne 0 ]; do
   clear
   echo "waiting for raid rebuild to finish before rebooting, please stand by..."
   cat /proc/mdstat
-  read -t1
+  sleep 1
   ISBUILDING=`grep '=' /proc/mdstat|wc -l`
 done
 

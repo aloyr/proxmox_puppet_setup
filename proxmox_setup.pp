@@ -1,16 +1,19 @@
-package { vim: ensure => 'installed', }
+package { atop: ensure => 'installed', }
+package { bwm-ng: ensure => 'installed', }
+package { curl: ensure => 'installed', }
+package { cron-apt: ensure => 'installed', }
+package { htop: ensure => 'installed', }
+package { iotop: ensure => 'installed', }
+package { iptraf: ensure => 'installed', }
+package { lshw: ensure => 'installed', }
+package { pv: ensure => 'installed', }
+package { rsyslog: ensure => 'installed', }
 package { screen: ensure => 'installed', }
 package { smartmontools: ensure => 'installed', }
-package { iptraf: ensure => 'installed', }
-package { bwm-ng: ensure => 'installed', }
 package { tcpdump: ensure => 'installed', }
-package { wget: ensure => 'installed', }
-package { pv: ensure => 'installed', }
-package { atop: ensure => 'installed', }
-package { iotop: ensure => 'installed', }
-package { lshw: ensure => 'installed', }
-package { rsyslog: ensure => 'installed', }
 package { tmux: ensure => 'installed', }
+package { vim: ensure => 'installed', }
+package { wget: ensure => 'installed', }
 
 Exec {
   path => [

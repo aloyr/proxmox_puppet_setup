@@ -33,26 +33,27 @@ exec {'no_enterprise':
 
 exec {'test': 
   command => 
-    "wget -P /tmp https://apt.puppetlabs.com/puppetlabs-release-${lsbdistcodename}.deb ; dpkg -i /tmp/puppetlabs-release-${lsbdistcodename}.deb ; rm -f /tmp/puppetlabs-release-${lsbdistcodename}.deb",
-  creates => '/etc/apt/sourceslist.d/puppetlabs-release.list',
+    "wget -P /tmp https://apt.puppetlabs.com/puppetlabs-release-pc1-${lsbdistcodename}.deb ; dpkg -i /tmp/puppetlabs-release-${lsbdistcodename}.deb ; rm -f /tmp/puppetlabs-release-pc1-${lsbdistcodename}.deb",
+  creates => '/etc/apt/sourceslist.d/puppetlabs-pc1.list',
 }
 
 
-$backports_file = "/etc/apt/sources.list.d/backports.list"
-#$backports_contents = "deb http://us.debian.org/debian-backports wheezy-backports main"
-$backports_contents = "deb http://ftp.de.debian.org/debian wheezy-backports main"
-exec {'backports':
-  command => "echo '$backports_contents' > $backports_file",
-  creates => "$backports_file",
-  logoutput => on_failure,
-}
-
-exec {'git':
-  command => "apt-get update ; apt-get -t wheezy-backports install git",
-  creates => '/usr/bin/git',
-  logoutput => on_failure,
-  require => Exec ['no_enterprise'],
-}
+package { git: ensure => 'installed', }
+#$backports_file = "/etc/apt/sources.list.d/backports.list"
+##$backports_contents = "deb http://us.debian.org/debian-backports wheezy-backports main"
+#$backports_contents = "deb http://ftp.de.debian.org/debian wheezy-backports main"
+#exec {'backports':
+#  command => "echo '$backports_contents' > $backports_file",
+#  creates => "$backports_file",
+#  logoutput => on_failure,
+#}
+#
+#exec {'git':
+#  command => "apt-get update ; apt-get -t wheezy-backports install git",
+#  creates => '/usr/bin/git',
+#  logoutput => on_failure,
+#  require => Exec ['no_enterprise'],
+#}
 
 exec {'set_prompt.sh':
   command => "wget -O /etc/profile.d/set_prompt.sh https://raw.githubusercontent.com/aloyr/proxmox_puppet_setup/master/set_prompt.sh",
@@ -66,12 +67,12 @@ exec {'toprc':
 
 package {'vim':
   ensure => 'installed',
-  require => 'no_enterprise',
+  require => Exec ['no_enterprise'],
 }
 
 package {'mdadm':
   ensure => 'installed',
-  require => 'no_enterprise',
+  require => Exec ['no_enterprise'],
 }
 
 class timezone {

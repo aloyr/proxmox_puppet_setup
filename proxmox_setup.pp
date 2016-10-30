@@ -12,7 +12,7 @@ package { screen: ensure => 'installed', }
 package { smartmontools: ensure => 'installed', }
 package { tcpdump: ensure => 'installed', }
 package { tmux: ensure => 'installed', }
-package { vim: ensure => 'installed', }
+#package { vim: ensure => 'installed', }
 package { wget: ensure => 'installed', }
 
 Exec {
